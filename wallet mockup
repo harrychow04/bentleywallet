@@ -1,0 +1,197 @@
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, StatusBar, StyleSheet, SafeAreaView } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
+
+export default function TalWallet() {
+  const [activeTab, setActiveTab] = useState('wallet');
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor="#1565C0" barStyle="light-content" />
+      
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={styles.logoContainer}>
+          <Icon name="shield" size={24} color="#fff" />
+          <Text style={styles.headerTitle}>TAL Wallet</Text>
+        </View>
+        <TouchableOpacity>
+          <Icon name="camera" size={24} color="#fff" />
+        </TouchableOpacity>
+      </View>
+
+      {/* Main Content */}
+      <ScrollView style={styles.content}>
+        
+        {/* Balance Cards */}
+        <View style={styles.cardContainer}>
+          <View style={[styles.card, { backgroundColor: '#1565C0' }]}>
+            <Text style={styles.cardSubtitle}>IOTA Balance</Text>
+            <Text style={styles.cardTitle}>42.8 Mi</Text>
+            <Text style={styles.cardSubtitle}>≈ $12.84 USD</Text>
+            <View style={styles.cardActions}>
+              <TouchableOpacity style={styles.actionButton}>
+                <Icon name="send" size={16} color="#fff" />
+                <Text style={styles.actionText}>Send</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.actionButton}>
+                <Icon name="download" size={16} color="#fff" />
+                <Text style={styles.actionText}>Receive</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={[styles.card, { backgroundColor: '#00ACC1' }]}>
+            <Text style={styles.cardSubtitle}>TAL Coin Balance</Text>
+            <Text style={styles.cardTitle}>215</Text>
+            <Text style={styles.cardSubtitle}>Campus Currency</Text>
+            <View style={styles.cardActions}>
+              <TouchableOpacity style={styles.actionButton}>
+                <Icon name="repeat" size={16} color="#fff" />
+                <Text style={styles.actionText}>Transfer</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.actionButton}>
+                <Icon name="award" size={16} color="#fff" />
+                <Text style={styles.actionText}>Redeem</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+
+        {/* Quick Services */}
+        <View style={styles.servicesContainer}>
+          {[
+            { label: 'Access', icon: 'key' },
+            { label: 'Pay', icon: 'credit-card' },
+            { label: 'Events', icon: 'calendar' },
+            { label: 'Rewards', icon: 'gift' },
+          ].map((item) => (
+            <TouchableOpacity key={item.label} style={styles.serviceItem}>
+              <Icon name={item.icon} size={24} color="#1565C0" />
+              <Text style={styles.serviceText}>{item.label}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* Tabs */}
+        <View style={styles.tabContainer}>
+          <View style={styles.tabs}>
+            {['wallet', 'credentials', 'activity'].map((tab) => (
+              <TouchableOpacity
+                key={tab}
+                style={[styles.tab, activeTab === tab && styles.activeTab]}
+                onPress={() => setActiveTab(tab)}
+              >
+                <Text style={[styles.tabText, activeTab === tab && styles.activeTabText]}>
+                  {tab.toUpperCase()}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          {/* Tab Contents */}
+          {activeTab === 'wallet' && (
+            <View style={styles.tabContent}>
+              <Text style={styles.tabHeader}>Assets</Text>
+              <View style={styles.asset}>
+                <Icon name="shield" size={20} color="#1565C0" />
+                <Text style={styles.assetText}>IOTA - 42.8 Mi</Text>
+              </View>
+              <View style={styles.asset}>
+                <Icon name="award" size={20} color="#00ACC1" />
+                <Text style={styles.assetText}>TAL Coins - 215</Text>
+              </View>
+            </View>
+          )}
+
+          {activeTab === 'credentials' && (
+            <View style={styles.tabContent}>
+              <Text style={styles.tabHeader}>Credentials</Text>
+              <View style={styles.asset}>
+                <Icon name="user-check" size={20} color="#1565C0" />
+                <Text style={styles.assetText}>Student ID Verified</Text>
+              </View>
+            </View>
+          )}
+
+          {activeTab === 'activity' && (
+            <View style={styles.tabContent}>
+              <Text style={styles.tabHeader}>Recent Activity</Text>
+              <View style={styles.asset}>
+                <Icon name="check-circle" size={20} color="#4CAF50" />
+                <Text style={styles.assetText}>Gym Check-in - Today, 2:15 PM</Text>
+              </View>
+            </View>
+          )}
+        </View>
+
+      </ScrollView>
+
+      {/* Bottom Navigation */}
+      <View style={styles.bottomNav}>
+        {[
+          { label: 'Home', icon: 'home', tab: 'wallet' },
+          { label: 'Credentials', icon: 'lock', tab: 'credentials' },
+          { label: 'Activity', icon: 'list', tab: 'activity' },
+          { label: 'Settings', icon: 'settings', tab: 'settings' },
+        ].map(item => (
+          <TouchableOpacity
+            key={item.tab}
+            style={styles.navItem}
+            onPress={() => setActiveTab(item.tab)}
+          >
+            <Icon
+              name={item.icon}
+              size={20}
+              color={activeTab === item.tab ? '#1565C0' : '#757575'}
+            />
+            <Text style={[styles.navText, activeTab === item.tab && { color: '#1565C0' }]}>
+              {item.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#fff' },
+  header: {
+    backgroundColor: '#1565C0',
+    padding: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  logoContainer: { flexDirection: 'row', alignItems: 'center' },
+  headerTitle: { color: '#fff', fontSize: 20, marginLeft: 8, fontWeight: 'bold' },
+  content: { padding: 15 },
+  cardContainer: { flexDirection: 'column', gap: 12 },
+  card: { borderRadius: 10, padding: 15 },
+  cardTitle: { fontSize: 24, color: '#fff', fontWeight: 'bold', marginVertical: 5 },
+  cardSubtitle: { fontSize: 13, color: '#e3f2fd' },
+  cardActions: { flexDirection: 'row', marginTop: 10, gap: 10 },
+  actionButton: { flexDirection: 'row', alignItems: 'center' },
+  actionText: { color: '#fff', marginLeft: 5 },
+  servicesContainer: { flexDirection: 'row', justifyContent: 'space-around', marginVertical: 20 },
+  serviceItem: { alignItems: 'center' },
+  serviceText: { marginTop: 5, fontSize: 12 },
+  tabContainer: { marginBottom: 80 },
+  tabs: { flexDirection: 'row', justifyContent: 'space-around' },
+  tab: { padding: 10, borderBottomWidth: 2, borderColor: 'transparent' },
+  activeTab: { borderColor: '#1565C0' },
+  tabText: { color: '#757575', fontWeight: 'bold' },
+  activeTabText: { color: '#1565C0' },
+  tabContent: { paddingVertical: 15 },
+  tabHeader: { fontWeight: 'bold', fontSize: 16, marginBottom: 10 },
+  asset: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
+  assetText: { marginLeft: 10 },
+  bottomNav: {
+    flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 10,
+    borderTopWidth: 1, borderColor: '#e0e0e0', backgroundColor: '#fff',
+    position: 'absolute', bottom: 0, width: '100%',
+  },
+  navItem: { alignItems: 'center' },
+  navText: { fontSize: 10, marginTop: 2, color: '#757575' },
+});
